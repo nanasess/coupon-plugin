@@ -84,7 +84,7 @@ jobs:
         - *install_eccube
         - *php_setup
       script:
-        - pwd
+        - cd app/Plugin/${PLUGIN_CODE}/Tests
         - ls -al
         # - ./bin/phpunit --coverage-clover=coverage.clover app/Plugin/${PLUGIN_CODE}/Tests
       after_success:
