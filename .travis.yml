@@ -1,6 +1,10 @@
 language: php
 
-sudo: required
+dist: xenial
+
+services:
+  - mysql
+  - postgresql
 
 cache:
   directories:
@@ -15,8 +19,8 @@ php:
 
 env:
   matrix:
-    # - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
-    # - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
+    - DATABASE_URL=mysql://root:@localhost/cube4_dev DATABASE_SERVER_VERSION=5
+    - DATABASE_URL=postgres://postgres:password@localhost/cube4_dev DATABASE_SERVER_VERSION=9
     - DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
   # plugin code
   global:
@@ -77,6 +81,7 @@ jobs:
       php: 7.3
       env: DATABASE_URL=sqlite:///var/eccube.db DATABASE_SERVER_VERSION=3 COVERAGE=1
       before_install:
+        - docker pull nanasess/phpdbg
         - docker pull schickling/mailcatcher
         - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
       install:
