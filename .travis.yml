@@ -1,7 +1,7 @@
 dist: trusty
 language: php
 
-sudo: required
+sudo: false
 
 cache:
   directories:
@@ -52,8 +52,8 @@ matrix:
       env: ECCUBE_VERSION=3.1 DB=sqlite
 
 install:
-  - gem install mime-types -v 2.99.1
-  - gem install mailcatcher
+  - docker pull schickling/mailcatcher
+  - docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
 
 before_script:
   # archive plugin
@@ -76,8 +76,6 @@ before_script:
   - php app/console plugin:develop install --path=${HOME}/${PLUGIN_CODE}.tar.gz
   # enable plugin
   - php app/console plugin:develop enable --code=${PLUGIN_CODE}
-  # mail catcher
-  - mailcatcher
 
 script:
   # exec phpunit on ec-cube
